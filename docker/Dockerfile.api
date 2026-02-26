@@ -1,0 +1,32 @@
+# ============================================================
+#  Dockerfile — MiddleFreeWare API (C# ASP.NET Core 8)
+# ============================================================
+
+# ── Build stage ───────────────────────────────────────────────
+FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
+WORKDIR /src
+
+COPY src/MiddleFreeWare.Api/MiddleFreeWare.Api.csproj ./MiddleFreeWare.Api/
+RUN dotnet restore MiddleFreeWare.Api/MiddleFreeWare.Api.csproj
+
+COPY src/MiddleFreeWare.Api/ ./MiddleFreeWare.Api/
+RUN dotnet publish MiddleFreeWare.Api/MiddleFreeWare.Api.csproj \
+    -c Release -o /app/publish \
+    --no-restore
+
+# ── Runtime stage ─────────────────────────────────────────────
+FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS runtime
+WORKDIR /app
+
+# Installer le client Docker (pour docker exec vers le conteneur COBOL)
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    docker.io \
+    && rm -rf /var/lib/apt/lists/*
+
+COPY --from=build /app/publish .
+
+RUN mkdir -p /app/logs
+
+EXPOSE 5000
+
+ENTRYPOINT ["dotnet", "MiddleFreeWare.Api.dll"]

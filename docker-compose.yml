@@ -1,0 +1,91 @@
+version: "3.9"
+
+# ============================================================
+#  MiddleFreeWare — docker-compose.yml
+#
+#  Démarre :
+#    - mainfreem-cobol  : conteneur COBOL (depuis ../MainFreem)
+#    - postgres         : base de données partagée
+#    - middleware-api   : API C# ASP.NET Core
+#
+#  Usage :
+#    docker-compose up -d
+#    Swagger : http://localhost:5000
+# ============================================================
+
+services:
+
+  # ── API C# Middleware ──────────────────────────────────────
+  middleware-api:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.api
+    container_name: middlefreleware
+    ports:
+      - "5000:5000"
+    environment:
+      ASPNETCORE_ENVIRONMENT: Production
+      ASPNETCORE_URLS: http://+:5000
+      ConnectionStrings__PostgreSQL: "Host=postgres;Port=5432;Database=coboldb;Username=cobol;Password=cobol123"
+      Cobol__DockerContainerName: mainfreem-cobol
+      Cobol__ProgramsPath: /workspace/exercises
+    volumes:
+      # Socket Docker pour que l'API puisse faire "docker exec"
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./logs:/app/logs
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - mainfreem-net
+    restart: unless-stopped
+
+  # ── Conteneur COBOL (depuis le projet MainFreem) ───────────
+  cobol:
+    image: mainfreem-cobol:latest
+    container_name: mainfreem-cobol
+    stdin_open: true
+    tty: true
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      PGHOST: postgres
+      PGPORT: 5432
+      PGDATABASE: coboldb
+      PGUSER: cobol
+      PGPASSWORD: cobol123
+    volumes:
+      - ../MainFreem/exercises:/workspace/exercises
+    networks:
+      - mainfreem-net
+    restart: unless-stopped
+
+  # ── PostgreSQL partagé ─────────────────────────────────────
+  postgres:
+    image: postgres:16-alpine
+    container_name: mainfreem-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: coboldb
+      POSTGRES_USER: cobol
+      POSTGRES_PASSWORD: cobol123
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ../MainFreem/sql/init.sql:/docker-entrypoint-initdb.d/init.sql
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U cobol -d coboldb"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    networks:
+      - mainfreem-net
+
+volumes:
+  postgres_data:
+
+networks:
+  mainfreem-net:
+    name: mainfreem-network
